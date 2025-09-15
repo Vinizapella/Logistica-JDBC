@@ -26,6 +26,15 @@ public class Cliente {
         this.estado = estado;
     }
 
+    public Cliente(String nome, String cpfCnpj, String endereco, String cidade, String estado) {
+        this.nome = nome;
+        this.cpf_cnpj = cpfCnpj;
+        this.endereco = endereco;
+        this.cidade = cidade;
+        this.estado = estado;
+    }
+
+
     public int getId() {
         return id_cliente;
     }
@@ -74,3 +83,4 @@ public class Cliente {
         this.estado = estado;
     }
 }
+
