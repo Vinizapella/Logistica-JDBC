@@ -1,6 +1,8 @@
 package org.example.logistica.main;
 import org.example.logistica.dao.ClienteDAO;
+import org.example.logistica.dao.MotoristaDAO;
 import org.example.logistica.model.Cliente;
+import org.example.logistica.model.Motorista;
 
 import java.sql.SQLException;
 import java.util.Scanner;
@@ -41,11 +43,11 @@ public class Main {
                     break;
                 }
                 case 2:{
-
+                    cadastrarMotorista(leia);
                     break;
                 }
                 case 3:{
-
+                    cadastrarPedido;
                     break;
                 }
                 case 4:{
@@ -107,24 +109,18 @@ public class Main {
         }
 
     public static void cadastrarCliente(Scanner leia){
-        leia.nextLine(); // limpar ENTER que sobrou do nextInt()
-
+        leia.nextLine();
         System.out.println("===== CADASTRO DE CLIENTE =====");
         System.out.print("Digite o nome: ");
         String nome = leia.nextLine();
-
         System.out.print("Digite o CPF ou CNPJ: ");
         String cpf_cnpj = leia.nextLine();
-
         System.out.print("Digite o endereço: ");
         String endereco = leia.nextLine();
-
         System.out.print("Digite a cidade: ");
         String cidade = leia.nextLine();
-
         System.out.print("Digite o estado: ");
         String estado = leia.nextLine();
-
         var cliente = new Cliente(nome, cpf_cnpj, endereco, cidade, estado);
         var clienteDao = new ClienteDAO();
         try {
@@ -134,6 +130,29 @@ public class Main {
             System.out.println("Ocorreu um erro no banco de dados!");
             e.printStackTrace();
         }
+    }
+    public static void cadastrarMotorista(Scanner leia){
+        leia.nextLine();
+        System.out.println("===== CADASTRO DE MOTORISTA =====");
+        System.out.println("Digite o nome: ");
+        String nome = leia.nextLine();
+        System.out.println("Digite a cnh: ");
+        String cnh = leia.nextLine();
+        System.out.println("Digite o seu veiculo: ");
+        String veiculo = leia.nextLine();
+        System.out.println("Digite a sua cidade base: ");
+        String cidade_base = leia.nextLine();
+        var motorista = new Motorista(nome, cnh, veiculo, cidade_base);
+        var motoristaDao = new MotoristaDAO();
+        try {
+            motoristaDao.InserirMotorista(motorista);
+            System.out.println("O motorista foi inserido com sucesso!");
+        } catch (SQLException e) {
+            System.out.println("Ocorreu um erro no banco de dados!");
+            e.printStackTrace();
+        }
+
+
     }
 
 }
