@@ -1,7 +1,7 @@
 package org.example.logistica.enuns;
 
 public enum StatusPedido {
-    PEDENTE,
+    PENDENTE,
     ENTREGUE,
     CANCELADO
 }

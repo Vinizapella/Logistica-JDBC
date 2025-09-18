@@ -5,6 +5,7 @@ import org.example.logistica.model.Cliente;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class ClienteDAO {
@@ -27,4 +28,29 @@ public class ClienteDAO {
             stmt.executeUpdate();
         }
     }
+
+    public int buscarIdClientePorCpfCnpj(String cpfCnpj) throws SQLException {
+        String query = """
+                SELECT id_cliente
+                FROM Cliente
+                WHERE cpf_cnpj = ? 
+                """;
+
+        int idClienteEncontrado = 0;
+
+        try (Connection conn = Conexao.conectar();
+             PreparedStatement pstm = conn.prepareStatement(query)) {
+
+            pstm.setString(1, cpfCnpj);
+
+            try (ResultSet rs = pstm.executeQuery()) {
+                if (rs.next()) {
+                    idClienteEncontrado = rs.getInt("id_cliente");
+                }
+            }
+        }
+
+        return idClienteEncontrado;
+    }
+
 }
