@@ -5,9 +5,12 @@ import org.example.logistica.dao.PedidoDAO;
 import org.example.logistica.model.Cliente;
 import org.example.logistica.model.Motorista;
 import org.example.logistica.model.Pedido;
+import org.example.logistica.util.Util;
 
 import java.sql.SQLException;
 import java.util.Scanner;
+
+import static org.example.logistica.util.Util.buscarEValidarCliente;
 
 public class Main {
     static Scanner leia = new Scanner(System.in);
@@ -19,26 +22,26 @@ public class Main {
     public static void inicio() {
         boolean sair = false;
         System.out.println("""
-                       ===== BEM VINDO AO SISTEMA DE LOGISTICA =====
-                       Escolha uma opção: 
-                        1 - Cadastrar Cliente
-                        2 - Cadastrar Motorista
-                        3 - Criar Pedido
-                        4 - Atribuir Pedido a Motorista (Gerar Entrega)
-                        5 - Registrar Evento de Entrega (Histórico)
-                        6 - Atualizar Status da Entrega
-                        7 - Listar Todas as Entregas com Cliente e Motorista
-                        8 - Relatório: Total de Entregas por Motorista
-                        9 - Relatório: Clientes com Maior Volume Entregue
-                        10 - Relatório: Pedidos Pendentes por Estado
-                        11 - Relatório: Entregas Atrasadas por Cidade
-                        12 - Buscar Pedido por CPF/CNPJ do Cliente
-                        13 - Cancelar Pedido
-                        14 - Excluir Entrega (com validação)
-                        15 - Excluir Cliente (com verificação de dependência)
-                        16 - Excluir Motorista (com verificação de dependência)
-                        0 - Sair
-                        ==========================================
+                ===== BEM VINDO AO SISTEMA DE LOGISTICA =====
+                Escolha uma opção: 
+                1 - Cadastrar Cliente
+                2 - Cadastrar Motorista
+                3 - Criar Pedido
+                4 - Atribuir Pedido a Motorista (Gerar Entrega)
+                5 - Registrar Evento de Entrega (Histórico)
+                6 - Atualizar Status da Entrega
+                7 - Listar Todas as Entregas com Cliente e Motorista
+                8 - Relatório: Total de Entregas por Motorista
+                9 - Relatório: Clientes com Maior Volume Entregue
+                10 - Relatório: Pedidos Pendentes por Estado
+                11 - Relatório: Entregas Atrasadas por Cidade
+                12 - Buscar Pedido por CPF/CNPJ do Cliente
+                13 - Cancelar Pedido
+                14 - Excluir Entrega (com validação)
+                15 - Excluir Cliente (com verificação de dependência)
+                16 - Excluir Motorista (com verificação de dependência)
+                0 - Sair
+                ==========================================
                 """);
         int opcao = leia.nextInt();
         switch (opcao) {
@@ -87,7 +90,6 @@ public class Main {
                 break;
             }
             case 12: {
-
                 break;
             }
             case 13: {
@@ -158,48 +160,25 @@ public class Main {
         }
     }
 
-        public static void cadastrarPedido(Scanner leia) {
-            leia.nextLine();
-            System.out.println("===== CADASTRO DE PEDIDOS =====");
-
-            System.out.println("Digite o CPF ou CNPJ do cliente: ");
-            String cpfCnpjCliente = leia.nextLine();
-
-            ClienteDAO clienteDAO = new ClienteDAO();
-            int idCliente;
-
-            try {
-                idCliente = clienteDAO.buscarIdClientePorCpfCnpj(cpfCnpjCliente);
-                if (idCliente == 0) {
-                    System.out.println("ERRO: Cliente com CPF/CNPJ informado não foi encontrado.");
-                    return;
-                }
-
-                System.out.println(" Cliente encontrado (ID: " + idCliente + "). Prossiga com os dados do pedido.");
-
-                System.out.println("Digite o volume em m³: ");
-                double volume_m3 = leia.nextDouble();
-
-                System.out.println("Digite o peso em kg: ");
-                double peso_kg = leia.nextDouble();
-
-                Pedido pedido = new Pedido(idCliente, volume_m3, peso_kg);
-
-                PedidoDAO pedidoDao = new PedidoDAO();
-
-                try {
-                    pedidoDao.inserirPedido(pedido);
-                } catch (SQLException e) {
-                    System.out.println(" Ocorreu um erro ao inserir o pedido no banco de dados!");
-                    e.printStackTrace();
-                }
-
-            } catch (SQLException e) {
-                System.out.println(" Ocorreu um erro ao buscar o cliente no banco de dados!");
-                e.printStackTrace();
-            }
+    public static void cadastrarPedido(Scanner leia) {
+        leia.nextLine();
+        System.out.println("===== CADASTRO DE PEDIDOS =====");
+        ClienteDAO clienteDAO = new ClienteDAO();
+        int idCliente = buscarEValidarCliente(leia, clienteDAO);
+        System.out.println("Prossiga com os dados do pedido.");
+        System.out.println("Digite o volume em m³: ");
+        double volume_m3 = leia.nextDouble();
+        System.out.println("Digite o peso em kg: ");
+        double peso_kg = leia.nextDouble();
+        Pedido pedido = new Pedido(idCliente, volume_m3, peso_kg);
+        PedidoDAO pedidoDao = new PedidoDAO();
+        try {
+            pedidoDao.inserirPedido(pedido);
+        } catch (SQLException e) {
+            System.out.println(" Ocorreu um erro ao inserir o pedido no banco de dados!");
+            e.printStackTrace();
         }
-
+    }
     }
 
 
