@@ -3,47 +3,30 @@ package org.example.logistica.model;
 import java.time.LocalDateTime;
 
 public class HistoricoEntrega {
-    private int id_Historico;
-    private int id_entrega;
+    private int id;
+    private int entrega_id;
     private LocalDateTime data_evento;
     private String descricao;
 
-    public HistoricoEntrega(int id_Historico, int id_entrega, LocalDateTime data_evento, String descricao) {
-        this.id_Historico = id_Historico;
-        this.id_entrega = id_entrega;
+    public HistoricoEntrega(int entrega_id, LocalDateTime data_evento, String descricao) {
+        this.entrega_id = entrega_id;
         this.data_evento = data_evento;
         this.descricao = descricao;
     }
 
-    public int getId_Historico() {
-        return id_Historico;
+    public HistoricoEntrega(int id, int entrega_id, LocalDateTime data_evento, String descricao) {
+        this(entrega_id, data_evento, descricao);
+        this.id = id;
     }
 
-    public void setId_Historico(int id_Historico) {
-        this.id_Historico = id_Historico;
-    }
+    public int getId() { return id; }
+    public int getEntrega_id() { return entrega_id; }
+    public LocalDateTime getData_evento() { return data_evento; }
+    public String getDescricao() { return descricao; }
 
-    public int getId_entrega() {
-        return id_entrega;
-    }
-
-    public void setId_entrega(int id_entrega) {
-        this.id_entrega = id_entrega;
-    }
-
-    public LocalDateTime getData_evento() {
-        return data_evento;
-    }
-
-    public void setData_evento(LocalDateTime data_evento) {
-        this.data_evento = data_evento;
-    }
-
-    public String getDescricao() {
-        return descricao;
-    }
-
-    public void setDescricao(String descricao) {
-        this.descricao = descricao;
+    @Override
+    public String toString() {
+        return String.format("Histórico [ID: %d, Entrega ID: %d, Data: %s, Descrição: %s]",
+                id, entrega_id, data_evento, descricao);
     }
 }
